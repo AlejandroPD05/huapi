@@ -35,8 +35,23 @@ style.css     Tokens (:root), BEM, mobile-first (max-width 480px)
 script.js     Los dos observers, desacoplados vía data-target/data-category
 ```
 
+## Notas de seguridad
+
+- Sitio 100 % estático: sin servidor propio en producción, sin formularios ni
+  datos de usuario. `npm run serve` solo levanta `serve` en local (desarrollo);
+  lo publicado es GitHub Pages.
+- GitHub Pages no permite configurar cabeceras HTTP (`X-Content-Type-Options`,
+  `X-Frame-Options`, `Permissions-Policy`). Solo es posible fijar
+  `Referrer-Policy` vía `<meta name="referrer">`; HSTS lo añade GitHub.
+- `script.js` no toca HTML (`innerHTML`/`eval`/`document.write`): solo clases y
+  `IntersectionObserver`, así que no hay superficie XSS con datos de usuario.
+- Sin secretos en el repo; `.gitignore` cubre `.env*` de forma preventiva.
+
 ## Posibles mejoras
 
 - `aria-current` en la pestaña activa y `aria-label` en el `<nav>`
 - Datos estructurados JSON-LD (`schema.org/Menu`) para rich results
 - Filtro por etiquetas (sin gluten / vegetariano / picante)
+- Actualizar ESLint/@eslint/js a v10 y globals a v17 (major pendiente de
+  validar) y fijar la versión de `serve` como devDependency (hoy `npx` baja la
+  última en cada uso)
